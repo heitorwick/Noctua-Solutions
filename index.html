@@ -1,0 +1,1540 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctua Solutions — Assistência Técnica</title>
+  <meta name="description" content="Assistência técnica e manutenção de computadores. Soluções rápidas, eficientes e de qualidade para residências, empresas e autônomos." />
+  <link rel="icon" href="assets/noctua-logo.png" />
+  <style>
+/* ============================================================
+   NOCTUA SOLUTIONS — nocturnal tech design system
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* surfaces — nocturnal graphite/blue */
+  --bg-0: #080B12;
+  --bg-1: #0D1117;
+  --bg-2: #131926;
+  --bg-3: #19202F;
+  --bg-card: #141B28;
+  --border: rgba(150, 168, 200, 0.12);
+  --border-strong: rgba(150, 168, 200, 0.22);
+
+  /* text */
+  --text: #EAEFF7;
+  --text-2: #B7C2D4;
+  --text-muted: #7E8AA0;
+
+  /* brand accent (violet from the owl logo) — overridable by Tweaks */
+  --accent: #8B5CF6;
+  --accent-2: #22D3EE;
+  --accent-deep: #6D3FD1;
+  --accent-soft: rgba(139, 92, 246, 0.14);
+  --accent-glow: rgba(139, 92, 246, 0.40);
+
+  --wa: #25D366;
+
+  /* shape */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 30px;
+
+  --maxw: 1200px;
+  --shadow-card: 0 18px 48px -22px rgba(0,0,0,0.8);
+  --shadow-glow: 0 0 0 1px var(--border), 0 24px 60px -28px var(--accent-glow);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg-1);
+  color: var(--text);
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* nocturnal backdrop: subtle star noise + aurora glows */
+.night-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 78% -8%, var(--accent-soft), transparent 60%),
+    radial-gradient(760px 480px at 8% 12%, rgba(34, 211, 238, 0.08), transparent 62%),
+    radial-gradient(1100px 700px at 50% 118%, rgba(109, 63, 209, 0.12), transparent 60%);
+}
+.night-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1.4px 1.4px at 20% 30%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.2px 1.2px at 70% 22%, rgba(255,255,255,.35), transparent),
+    radial-gradient(1.6px 1.6px at 42% 64%, rgba(255,255,255,.30), transparent),
+    radial-gradient(1.1px 1.1px at 86% 70%, rgba(255,255,255,.32), transparent),
+    radial-gradient(1.3px 1.3px at 12% 80%, rgba(255,255,255,.28), transparent),
+    radial-gradient(1.2px 1.2px at 60% 88%, rgba(255,255,255,.22), transparent);
+  opacity: .5;
+}
+/* tech-grid vibe (toggled via Tweaks) */
+body[data-vibe="grid"] .night-bg {
+  background:
+    radial-gradient(800px 460px at 80% -10%, var(--accent-soft), transparent 60%),
+    linear-gradient(var(--bg-1), var(--bg-1));
+}
+body[data-vibe="grid"] .night-bg::after {
+  background-image:
+    linear-gradient(rgba(150,168,200,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150,168,200,.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 1;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+}
+
+.shell { position: relative; z-index: 1; }
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+/* ---------- typography ---------- */
+h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; margin: 0; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent);
+  display: inline-flex; align-items: center; gap: 9px;
+}
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); opacity: .7; }
+.section-h { font-size: clamp(30px, 4vw, 46px); }
+.lede { color: var(--text-2); font-size: 18px; max-width: 56ch; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15.5px;
+  padding: 14px 22px; border-radius: 999px; border: 1px solid transparent;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .2s, border-color .2s;
+}
+.btn svg { width: 19px; height: 19px; }
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(120deg, var(--accent-deep), var(--accent) 55%, var(--accent-2));
+  box-shadow: 0 14px 34px -14px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -14px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.22); }
+.btn-ghost {
+  color: var(--text); background: rgba(255,255,255,.03); border-color: var(--border-strong);
+  backdrop-filter: blur(6px);
+}
+.btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent); color: #fff; background: var(--accent-soft); }
+.btn-lg { padding: 17px 30px; font-size: 17px; }
+.online-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--wa); box-shadow: 0 0 0 0 rgba(37,211,102,.6); animation: pulse 2.2s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);} 70%{box-shadow:0 0 0 7px rgba(37,211,102,0);} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0);} }
+
+/* ---------- header ---------- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  transition: background .3s, border-color .3s, backdrop-filter .3s;
+  border-bottom: 1px solid transparent;
+}
+.header.scrolled { background: rgba(10, 13, 20, 0.72); backdrop-filter: blur(16px) saturate(1.3); border-bottom-color: var(--border); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 78px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+.brand-img { height: 62px; width: auto; display: block; }
+.brand-logo { width: 38px; height: 38px; display: grid; place-items: center; }
+.brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21px; letter-spacing: .14em; }
+.nav { display: flex; align-items: center; gap: 6px; }
+.nav a {
+  color: var(--text-2); text-decoration: none; font-weight: 600; font-size: 15px;
+  padding: 9px 15px; border-radius: 999px; position: relative; transition: color .2s, background .2s;
+}
+.nav a:hover { color: var(--text); }
+.nav a.active { color: #fff; }
+.nav a.active::after { content:""; position:absolute; left:15px; right:15px; bottom:3px; height:2px; border-radius:2px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); }
+.header-cta { display: flex; align-items: center; gap: 14px; }
+.menu-btn { display: none; background: transparent; border: 1px solid var(--border-strong); color: var(--text); width: 44px; height: 44px; border-radius: 12px; cursor: pointer; }
+
+/* mobile drawer */
+.drawer { position: fixed; inset: 0; z-index: 60; display: none; }
+.drawer.open { display: block; }
+.drawer-scrim { position:absolute; inset:0; background: rgba(5,7,12,.66); backdrop-filter: blur(4px); }
+.drawer-panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(82vw, 340px);
+  background: var(--bg-2); border-left: 1px solid var(--border); padding: 24px;
+  display: flex; flex-direction: column; gap: 8px; transform: translateX(0);
+  animation: slideIn .3s var(--ease);
+}
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.drawer-panel a { color: var(--text); text-decoration: none; font-family: 'Space Grotesk'; font-size: 22px; font-weight: 500; padding: 14px 8px; border-bottom: 1px solid var(--border); }
+.drawer-panel a:hover { color: var(--accent); }
+
+/* ---------- hero ---------- */
+.hero { padding: 168px 0 96px; position: relative; }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 6.4vw, 76px); font-weight: 700; }
+.hero h1 .grad { background: linear-gradient(110deg, var(--accent) 10%, var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lede { margin: 22px 0 34px; font-size: 19.5px; }
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-trust {
+  display: flex; gap: 0; margin-top: 44px; flex-wrap: wrap; align-items: stretch;
+}
+.trust-item {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 0 28px; position: relative;
+}
+.trust-item:first-child { padding-left: 0; }
+.trust-item:not(:first-child)::before {
+  content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2) 60%, transparent);
+  opacity: .5;
+}
+.trust-item b {
+  font-family: 'Space Grotesk'; font-size: 34px; font-weight: 700; line-height: 1;
+  background: linear-gradient(110deg, var(--accent) 20%, var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.trust-item span { font-size: 13.5px; color: var(--text-2); line-height: 1.35; }
+
+/* hero visual */
+.hero-visual { position: relative; display: grid; place-items: center; min-height: 420px; }
+.halo { position: absolute; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, var(--accent-glow), transparent 62%); filter: blur(8px); }
+.owl-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border-strong); }
+.owl-ring.r1 { width: 320px; height: 320px; animation: spin 38s linear infinite; }
+.owl-ring.r2 { width: 420px; height: 420px; border-style: dashed; opacity: .5; animation: spin 64s linear infinite reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.owl-orb {
+  position: relative; width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 34%, var(--bg-3), var(--bg-0) 72%);
+  border: 1px solid var(--border-strong);
+  display: grid; place-items: center;
+  box-shadow: inset 0 2px 30px rgba(0,0,0,.6), 0 30px 80px -30px var(--accent-glow);
+}
+.owl-orb svg { width: 150px; height: 150px; }
+.orb-logo { width: 128px; height: auto; display: block; filter: drop-shadow(0 8px 22px rgba(0,0,0,.5)); }
+
+/* pulse rings emanating from orb */
+.pulse-ring {
+  position: absolute; width: 260px; height: 260px; border-radius: 50%;
+  border: 1px solid var(--accent); opacity: 0; pointer-events: none;
+  animation: pulseRing 3.6s ease-out infinite;
+}
+.pulse-ring.pr2 { animation-delay: 1.2s; }
+.pulse-ring.pr3 { animation-delay: 2.4s; }
+@keyframes pulseRing {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(2.0); opacity: 0;   }
+}
+
+/* chip wrappers — position via inline style, float via CSS */
+.chip-wrap { position: absolute; }
+.chip-wrap.c1 { animation: float 5.5s ease-in-out infinite; }
+.chip-wrap.c2 { animation: float 6.5s ease-in-out infinite .8s; }
+.chip-wrap.c3 { animation: float 6s   ease-in-out infinite .4s; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+/* chip — visual card + fade transition */
+.chip {
+  display: flex; align-items: center; gap: 11px;
+  background: rgba(10, 14, 24, 0.92);
+  border: 1px solid rgba(150, 168, 200, 0.18);
+  backdrop-filter: blur(20px) saturate(1.6);
+  padding: 10px 16px 10px 10px; border-radius: 16px;
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+  box-shadow: 0 10px 36px -8px rgba(0,0,0,.75), 0 0 0 1px rgba(139,92,246,.1);
+  overflow: hidden;
+  opacity: 1; filter: blur(0); transform: translateY(0) scale(1);
+  transition: opacity .58s var(--ease), filter .58s var(--ease), transform .58s var(--ease),
+              border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.chip.chip-hidden { opacity: 0; filter: blur(7px); transform: translateY(12px) scale(0.9); }
+.chip:hover {
+  border-color: rgba(139,92,246,.5);
+  box-shadow: 0 10px 36px -8px rgba(0,0,0,.75), 0 0 22px -4px var(--accent-glow);
+}
+/* shimmer sweep */
+.chip::after {
+  content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+  animation: chipShimmer 5s ease-in-out infinite;
+  pointer-events: none;
+}
+.chip-wrap.c2 .chip::after { animation-delay: 1.8s; }
+.chip-wrap.c3 .chip::after { animation-delay: 0.9s; }
+@keyframes chipShimmer { 0% { left: -120%; } 35%, 100% { left: 130%; } }
+
+.chip-icon {
+  width: 32px; height: 32px; border-radius: 9px; flex: none;
+  background: linear-gradient(135deg, var(--accent-soft), rgba(34,211,238,.08));
+  border: 1px solid rgba(139,92,246,.22);
+  display: grid; place-items: center;
+}
+.chip-icon svg { width: 15px; height: 15px; color: var(--accent-2); }
+
+/* ---------- sections ---------- */
+section { position: relative; }
+.block { padding: 92px 0; }
+.section-head { max-width: 640px; margin-bottom: 52px; }
+.section-head .section-h { margin-top: 14px; }
+.section-head p { color: var(--text-2); margin: 16px 0 0; font-size: 18px; }
+
+/* services */
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.svc-card {
+  position: relative; background: linear-gradient(180deg, var(--bg-card), var(--bg-2));
+  border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px 28px 32px;
+  overflow: hidden; transition: transform .35s var(--ease), border-color .3s, box-shadow .35s var(--ease);
+}
+.svc-card::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); opacity:0; transition: opacity .3s; }
+.svc-card:hover { transform: translateY(-7px); border-color: var(--border-strong); box-shadow: var(--shadow-glow); }
+.svc-card:hover::before { opacity: 1; }
+.svc-icon {
+  width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center;
+  background: var(--accent-soft); border: 1px solid var(--border-strong); color: var(--accent);
+  margin-bottom: 22px;
+}
+.svc-icon svg { width: 30px; height: 30px; }
+.svc-card h3 { font-size: 24px; margin-bottom: 6px; }
+.svc-card .svc-tag { font-family: 'JetBrains Mono'; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.svc-list { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.svc-list li { display: flex; gap: 11px; align-items: flex-start; color: var(--text-2); font-size: 15px; line-height: 1.5; }
+.svc-list li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--accent-2); }
+
+/* about */
+.about-grid { display: grid; grid-template-columns: 1fr 0.86fr; gap: 56px; align-items: center; }
+.about-tag { font-family: 'Space Grotesk'; font-size: clamp(26px,3.4vw,38px); font-weight: 600; letter-spacing: -.02em; margin: 26px 0 0; }
+.about-tag .grad { background: linear-gradient(110deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.about-points { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 30px; }
+.about-point { display: flex; gap: 12px; align-items: flex-start; }
+.about-point svg { flex:none; width: 22px; height: 22px; color: var(--accent); margin-top: 2px; }
+.about-point b { display:block; font-size: 15.5px; color: var(--text); }
+.about-point span { font-size: 13.5px; color: var(--text-muted); }
+.about-visual {
+  position: relative; border-radius: var(--r-xl); overflow: hidden; min-height: 420px;
+  border: 1px solid var(--border); background: linear-gradient(160deg, var(--bg-2), var(--bg-0));
+  display: grid; place-items: center;
+}
+.about-visual .ph { display: grid; place-items: center; gap: 14px; color: var(--text-muted); text-align: center; padding: 24px; }
+.about-visual .ph svg { width: 64px; height: 64px; color: var(--accent); opacity:.85; }
+.about-visual .ph span { font-family:'JetBrains Mono'; font-size: 12px; letter-spacing:.12em; text-transform: uppercase; }
+.about-orbit { position:absolute; inset:0; background:
+  radial-gradient(420px 320px at 70% 20%, var(--accent-soft), transparent 60%),
+  radial-gradient(360px 300px at 18% 90%, rgba(34,211,238,.10), transparent 62%); }
+
+/* contact / footer */
+.contact { padding: 96px 0 0; }
+.contact-card {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-2), var(--bg-0));
+  border: 1px solid var(--border-strong); border-radius: var(--r-xl);
+  padding: 60px clamp(28px, 5vw, 72px); text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.contact-card::before { content:""; position:absolute; inset:0; background: radial-gradient(620px 360px at 50% -20%, var(--accent-glow), transparent 60%); opacity:.6; pointer-events:none; }
+.contact-card h2 { font-size: clamp(32px, 4.6vw, 54px); position: relative; }
+.contact-card p { color: var(--text-2); font-size: 19px; margin: 18px auto 32px; max-width: 52ch; position: relative; }
+.contact-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+.footer { padding: 64px 0 40px; margin-top: 80px; border-top: 1px solid var(--border); }
+.footer-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.footer-brand { max-width: 320px; }
+.footer-brand p { color: var(--text-muted); font-size: 14.5px; margin: 16px 0 0; }
+.socials { display: flex; gap: 12px; margin-top: 22px; }
+.social {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+  background: rgba(255,255,255,.03); border: 1px solid var(--border); color: var(--text-2);
+  transition: transform .25s var(--ease), color .2s, border-color .2s, background .2s;
+}
+.social:hover { transform: translateY(-3px); color: #fff; border-color: var(--accent); background: var(--accent-soft); }
+.social svg { width: 20px; height: 20px; }
+.footer-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+.footer-col h4 { font-family:'JetBrains Mono'; font-size: 12px; letter-spacing:.16em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 16px; font-weight: 500; }
+.footer-col a, .footer-col span { display:block; color: var(--text-2); text-decoration: none; font-size: 15px; padding: 5px 0; transition: color .2s; }
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom { display:flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 26px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13.5px; }
+.team-credits { display:flex; gap: 16px; flex-wrap: wrap; }
+.team-credits a { color: var(--text-2); text-decoration: none; font-family:'JetBrains Mono'; font-size: 13px; }
+.team-credits a:hover { color: var(--accent); }
+
+/* floating whatsapp */
+.fab-wrap {
+  position: fixed; right: 22px; bottom: 22px; z-index: 45;
+  display: flex; align-items: center; gap: 12px;
+}
+.fab {
+  width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--wa); color: #fff; box-shadow: 0 14px 34px -10px rgba(37,211,102,.6);
+  transition: transform .25s var(--ease); border: none; cursor: pointer;
+  text-decoration: none; flex: none;
+}
+.fab:hover { transform: scale(1.08); }
+.fab svg { width: 30px; height: 30px; }
+.fab-tip {
+  background: rgba(10, 14, 24, 0.94);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 9px 16px; border-radius: 12px; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.45);
+  backdrop-filter: blur(14px);
+  opacity: 0; pointer-events: none;
+  transform: translateX(10px);
+  transition: opacity .26s var(--ease), transform .26s var(--ease);
+}
+.fab-wrap:hover .fab-tip { opacity: 1; transform: translateX(0); }
+
+/* scroll progress bar */
+.scroll-bar {
+  position: fixed; top: 0; left: 0; height: 2.5px; z-index: 200;
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent) 50%, var(--accent-2));
+  transition: width .08s linear;
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--accent-glow), 0 0 4px var(--accent);
+  transform-origin: left;
+}
+
+/* reveal animation — FAIL-SAFE: base state is visible; entrance only animates
+   *toward* that base. If JS never adds .in, or the tab is hidden (animations
+   throttled), content still shows. */
+.reveal { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .reveal.in { animation: revealIn .66s var(--ease); }
+}
+@keyframes revealIn { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+/* ---------- responsive ---------- */
+@media (max-width: 920px) {
+  .nav, .header-cta .btn { display: none; }
+  .menu-btn { display: grid; place-items: center; }
+  .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .hero-visual { min-height: 340px; order: -1; }
+  .owl-orb { width: 210px; height: 210px; } .owl-orb svg { width: 120px; height: 120px; } .orb-logo { width: 106px; }
+  .pulse-ring { width: 210px; height: 210px; }
+  .owl-ring.r1 { width: 260px; height: 260px; } .owl-ring.r2 { width: 340px; height: 340px; }
+  .halo { width: 360px; height: 360px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-visual { min-height: 300px; order: -1; }
+  .footer-top { flex-direction: column; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .wrap { padding: 0 18px; }
+  .hero { padding: 130px 0 72px; }
+  .block { padding: 68px 0; }
+  .hero-cta { width: 100%; }
+  .hero-cta .btn { flex: 1 1 auto; }
+  .about-points { grid-template-columns: 1fr; }
+  .hero-trust { gap: 18px; }
+  .contact-card { padding: 44px 22px; }
+}
+
+  </style>
+</head>
+<body data-vibe="glow">
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script type="text/babel">
+// @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
+
+/* BEGIN USAGE */
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+// Exports (to window): useTweaks, TweaksPanel, TweakSection, TweakRow, TweakSlider,
+//   TweakToggle, TweakRadio, TweakSelect, TweakText, TweakNumber, TweakColor, TweakButton.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakColor  label="Palette" value={t.palette}
+//                        options={[['#D97757', '#29261b', '#f6f4ef'],
+//                                  ['#475569', '#0f172a', '#f1f5f9']]}
+//                        onChange={(v) => setTweak('palette', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// TweakRadio is the segmented control for 2–3 short options (auto-falls-back to
+// TweakSelect past ~16/~10 chars per label); reach for TweakSelect directly when
+// options are many or long. For color tweaks always curate 3-4 options rather than
+// a free picker; an option can also be a whole 2–5 color palette (the stored value
+// is the array). The Tweak* controls are a floor, not a ceiling — build custom
+// controls inside the panel if a tweak calls for UI they don't cover.
+/* END USAGE */
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
+    // can react — the parent message only reaches the host, not peers.
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-omelette-chrome=""
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">
+          {children}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  // Segments wrap mid-word once per-segment width runs out. The track is
+  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
+  // back to a dropdown rather than wrap.
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    // <select> emits strings — map back to the original option value so the
+    // fallback stays type-preserving (numbers, booleans) like the segment path.
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return <TweakSelect label={label} value={value} options={options}
+                        onChange={(s) => onChange(resolve(s))} />;
+  }
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// read on both #111 and #fafafa without per-option configuration. Hex input
+// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+
+const __TwkCheck = ({ light }) => (
+  <svg viewBox="0 0 14 14" aria-hidden="true">
+    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round"
+          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
+  </svg>
+);
+
+// TweakColor — curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
+// rest stacked in a sharp column on the right. onChange emits the
+// option in the shape it was passed (string stays string, array stays array).
+// Without options it falls back to the native color input for back-compat.
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return (
+      <div className="twk-row twk-row-h">
+        <div className="twk-lbl"><span>{label}</span></div>
+        <input type="color" className="twk-swatch" value={value}
+               onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  // Native <input type=color> emits lowercase hex per the HTML spec, so
+  // compare case-insensitively. String() guards JSON.stringify(undefined),
+  // which returns the primitive undefined (no .toLowerCase).
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o, i) => {
+          const colors = Array.isArray(o) ? o : [o];
+          const [hero, ...rest] = colors;
+          const sup = rest.slice(0, 4);
+          const on = key(o) === cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio"
+                    aria-checked={on} data-on={on ? '1' : '0'}
+                    aria-label={colors.join(', ')} title={colors.join(' · ')}
+                    style={{ background: hero }}
+                    onClick={() => onChange(o)}>
+              {sup.length > 0 && (
+                <span>
+                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
+                </span>
+              )}
+              {on && <__TwkCheck light={__twkIsLight(hero)} />}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+  </script>
+  <script type="text/babel">
+/* global React */
+// ============================================================
+// NOCTUA — iconography (owl mark, service & utility icons, socials)
+// Line icons, 1.7 stroke, inherit currentColor.
+// ============================================================
+const S = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' };
+
+// Minimalist geometric owl — echoes the Noctua logo
+function OwlMark({ size = 64, style }) {
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} style={style} aria-hidden="true">
+      <defs>
+        <linearGradient id="owlg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="var(--accent)" />
+          <stop offset="1" stopColor="var(--accent-2)" />
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke="url(#owlg)" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round">
+        {/* ear tufts */}
+        <path d="M30 30 C24 18 22 12 27 9 C32 12 35 19 36 27" />
+        <path d="M70 30 C76 18 78 12 73 9 C68 12 65 19 64 27" />
+        {/* head / face outline */}
+        <path d="M50 17 C70 17 82 30 82 50 C82 72 68 88 50 88 C32 88 18 72 18 50 C18 30 30 17 50 17 Z" style={{ strokeWidth: "4px" }} />
+        {/* brow bridge */}
+        <path d="M50 40 L50 60" />
+        {/* eyes */}
+        <circle cx="36" cy="48" r="11.5" />
+        <circle cx="64" cy="48" r="11.5" />
+        {/* beak */}
+        <path d="M45 64 L50 74 L55 64 Z" fill="url(#owlg)" stroke="none" />
+      </g>
+      {/* pupils */}
+      <circle cx="36" cy="48" r="3.4" fill="var(--accent-2)" />
+      <circle cx="64" cy="48" r="3.4" fill="var(--accent-2)" />
+    </svg>);
+
+}
+
+// ---- service icons ----
+const IconClean = (p) =>
+<svg viewBox="0 0 24 24" {...S} {...p}>
+    <path d="M9 3l1.5 4.5L15 9l-4.5 1.5L9 15l-1.5-4.5L3 9l4.5-1.5L9 3z" />
+    <path d="M17.5 13l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z" />
+  </svg>;
+
+const IconBuild = (p) =>
+<svg viewBox="0 0 24 24" {...S} {...p}>
+    <rect x="4" y="3" width="10" height="18" rx="2" />
+    <path d="M7 7h4M7 11h4M7 15h2" />
+    <path d="M17 9l3 0M18.5 7.5v3M17 16l3 0M18.5 14.5v3" />
+  </svg>;
+
+const IconMaint = (p) =>
+<svg viewBox="0 0 24 24" {...S} {...p}>
+    <path d="M14.7 6.3a4 4 0 00-5.4 5.4l-5.6 5.6a1.6 1.6 0 002.3 2.3l5.6-5.6a4 4 0 005.4-5.4l-2.5 2.5-2.1-.4-.4-2.1 2.7-2.3z" />
+  </svg>;
+
+
+// ---- utility / check / chips ----
+const Check = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M20 6L9 17l-5-5" /></svg>;
+const Arrow = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+const Shield = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" /><path d="M9.5 12l1.8 1.8L15 10" /></svg>;
+const Bolt = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" /></svg>;
+const Cpu = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><rect x="7" y="7" width="10" height="10" rx="1.5" /><path d="M10 4v3M14 4v3M10 17v3M14 17v3M4 10h3M4 14h3M17 10h3M17 14h3" /></svg>;
+const Disk = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><rect x="3" y="6" width="18" height="5" rx="1.5" /><rect x="3" y="13" width="18" height="5" rx="1.5" /><path d="M7 8.5h0M7 15.5h0" /></svg>;
+const Monitor = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /></svg>;
+const Pin = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>;
+
+// ---- brand / social ----
+const Whatsapp = (p) =>
+<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" {...p}>
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm0 18.15h-.01a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.2 8.2 0 01-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 012.41 5.82c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z" />
+  </svg>;
+
+const Instagram = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" /></svg>;
+const Facebook = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M14 8.5V7c0-1 .5-1.5 1.6-1.5H17V2.5h-2.4C11.8 2.5 11 4 11 6.4v2.1H8.6V12H11v9.5h3V12h2.3l.5-3.5H14z" fill="currentColor" stroke="none" /></svg>;
+const TikTok = (p) => <svg viewBox="0 0 24 24" {...p} fill="currentColor"><path d="M16.5 2c.3 2.1 1.5 3.8 3.5 4.2v3c-1.3.1-2.5-.2-3.6-.8v6.1c0 3.5-2.8 6.1-6.1 5.7-2.9-.3-5.1-2.8-5-5.7.1-2.8 2.3-5.1 5.1-5.3.4 0 .8 0 1.2.1v3.1c-.4-.1-.8-.2-1.2-.1-1.3.2-2.2 1.3-2.1 2.6.1 1.2 1.1 2.2 2.4 2.2 1.4 0 2.4-1.1 2.4-2.5V2h3.4z" /></svg>;
+const Menu = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
+const Close = (p) => <svg viewBox="0 0 24 24" {...S} {...p}><path d="M6 6l12 12M18 6L6 18" /></svg>;
+
+Object.assign(window, {
+  OwlMark, IconClean, IconBuild, IconMaint,
+  Check, Arrow, Shield, Bolt, Cpu, Disk, Monitor, Pin,
+  Whatsapp, Instagram, Facebook, TikTok, Menu, Close
+});
+  </script>
+  <script type="text/babel">
+/* global React, useTweaks, TweaksPanel, TweakSection, TweakColor, TweakRadio, TweakToggle,
+   OwlMark, IconClean, IconBuild, IconMaint, Check, Arrow, Shield, Bolt, Cpu, Disk, Monitor, Pin,
+   Whatsapp, Instagram, Facebook, TikTok, Menu, Close */
+const { useState, useEffect, useRef } = React;
+
+// logo source — uses inlined blob when bundled standalone, else the file path
+const LOGO_SRC = (typeof window !== 'undefined' && window.__resources && window.__resources.logoFull) || 'assets/noctua-logo-full.png';
+
+// ---------- real contact data ----------
+const WA_NUMBER = '5516997727213';
+const WA_MSG = encodeURIComponent('Olá, Noctua! Meu computador está com um problema e preciso de ajuda. 🦉');
+const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+const SOCIAL = {
+  instagram: 'https://www.instagram.com/noctuaassistencia',
+  facebook: 'https://www.facebook.com/profile.php?id=61577053325074&mibextid=wwXIfr',
+  tiktok: 'https://www.tiktok.com/@noctua.assistncia'
+};
+const TEAM = [
+{ h: '@_fernandobelotti', url: 'https://www.instagram.com/_fernandobelotti' },
+{ h: '@pedro.ferreira_1', url: 'https://www.instagram.com/pedro.ferreira_1' },
+{ h: '@jao.viquitor', url: 'https://www.instagram.com/jao.viquitor' }];
+
+
+const NAV = [
+{ id: 'inicio', label: 'Início' },
+{ id: 'servicos', label: 'Serviços' },
+{ id: 'sobre', label: 'Sobre' }];
+
+
+const SERVICES = [
+{
+  tag: '01 · Hardware', icon: IconClean, title: 'Limpeza',
+  desc: 'Performance e temperatura sob controle com limpeza completa e cuidadosa.',
+  items: ['Limpeza completa interna e externa', 'Troca de pasta térmica', 'Gabinete, placa-mãe e placa de vídeo', 'Fans e sistema de ventilação']
+},
+{
+  tag: '02 · Upgrade', icon: IconBuild, title: 'Montagem',
+  desc: 'Monte ou evolua sua máquina com peças certas e cabos impecáveis.',
+  items: ['Montagem de PCs novos', 'Upgrades de CPU e memória', 'SSD / HD / NVMe', 'Fontes, fans e coolers', 'Organização de cabos e testes']
+},
+{
+  tag: '03 · Software', icon: IconMaint, title: 'Manutenção',
+  desc: 'Sistema rápido, seguro e do jeito que deveria funcionar.',
+  items: ['Formatação com backup', 'Ativação e configuração do Windows', 'Drivers e programas utilitários', 'Antivírus e otimização de segurança']
+}];
+
+
+const ABOUT_POINTS = [
+{ icon: Shield, b: 'Preventiva & corretiva', s: 'PCs, notebooks e redes' },
+{ icon: Disk, b: 'Recuperação de dados', s: 'Arquivos e backups' },
+{ icon: Bolt, b: 'Remoção de vírus', s: 'Segurança e limpeza' },
+{ icon: Cpu, b: 'Upgrades sob medida', s: 'Mais performance' }];
+
+
+// ---------- scroll reveal hook (rect-based; reliable across environments) ----------
+function useReveal() {
+  useEffect(() => {
+    let raf = 0;
+    const check = () => {
+      const h = window.innerHeight;
+      document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
+        if (el.getBoundingClientRect().top < h * 0.9) el.classList.add('in');
+      });
+    };
+    const onScroll = () => {cancelAnimationFrame(raf);raf = requestAnimationFrame(check);};
+    // reveal what's already on screen, then watch scroll
+    check();
+    requestAnimationFrame(check);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {window.removeEventListener('scroll', onScroll);window.removeEventListener('resize', onScroll);cancelAnimationFrame(raf);};
+  }, []);
+}
+
+// ---------- header ----------
+function Header({ active, onNav }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const go = (e, id) => {e.preventDefault();setOpen(false);onNav(id);};
+  return (
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+      <div className="wrap header-inner">
+        <a className="brand" href="#inicio" onClick={(e) => go(e, 'inicio')}>
+          <img src={LOGO_SRC} alt="Noctua Solutions" className="brand-img" />
+        </a>
+        <nav className="nav">
+          {NAV.map((n) =>
+          <a key={n.id} href={`#${n.id}`} className={active === n.id ? 'active' : ''} onClick={(e) => go(e, n.id)}>{n.label}</a>
+          )}
+        </nav>
+        <div className="header-cta">
+          <a className="btn btn-primary" href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Contato</a>
+          <button className="menu-btn" aria-label="Abrir menu" onClick={() => setOpen(true)}><Menu /></button>
+        </div>
+      </div>
+      <div className={`drawer ${open ? 'open' : ''}`}>
+        <div className="drawer-scrim" onClick={() => setOpen(false)} />
+        <div className="drawer-panel">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <span className="brand-name" style={{ fontSize: 18 }}>NOCTUA</span>
+            <button className="menu-btn" style={{ display: 'grid' }} aria-label="Fechar" onClick={() => setOpen(false)}><Close /></button>
+          </div>
+          {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={(e) => go(e, n.id)}>{n.label}</a>)}
+          <a href="#contato" onClick={(e) => go(e, 'contato')}>Contato</a>
+          <a className="btn btn-primary btn-lg" style={{ marginTop: 18, justifyContent: 'center' }} href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Fale no WhatsApp</a>
+        </div>
+      </div>
+    </header>);
+
+}
+
+// ---------- hero chips data ----------
+// positions[setIndex][chipIndex] — chips appear at different spots per set
+const CHIP_POSITIONS = [
+  // set 0 — top-esq · dir-meio · baixo-esq
+  [
+    { top: '22px',    left: '-10px'  },
+    { bottom: '58px', right: '-14px' },
+    { bottom: '4px',  left: '36px'  },
+  ],
+  // set 1 — top-dir · esq-meio · baixo-dir
+  [
+    { top: '18px',    right: '-12px' },
+    { bottom: '62px', left: '-18px'  },
+    { bottom: '6px',  right: '22px'  },
+  ],
+  // set 2 — top-centro-esq · esq-baixo · dir-centro
+  [
+    { top: '10px',    left: '20px'   },
+    { bottom: '20px', left: '-16px'  },
+    { top: '40%',     right: '-14px' },
+  ],
+];
+
+const CHIP_SETS = [
+  [
+    { icon: Bolt,      text: 'Diagnóstico rápido'   },
+    { icon: Shield,    text: 'Backup garantido'      },
+    { icon: Cpu,       text: 'Upgrades sob medida'   },
+  ],
+  [
+    { icon: IconClean, text: 'Limpeza + pasta térmica' },
+    { icon: IconBuild, text: 'Montagem de PCs'         },
+    { icon: IconMaint, text: 'Formatação + backup'     },
+  ],
+  [
+    { icon: Disk,      text: 'Recuperação de dados' },
+    { icon: Shield,    text: 'Remoção de vírus'     },
+    { icon: Monitor,   text: 'Atendimento remoto'   },
+  ],
+];
+
+// ---------- hero ----------
+function Hero({ onNav }) {
+  const [chipIdx, setChipIdx] = useState(0);
+  const [chipsVis, setChipsVis] = useState(true);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setChipsVis(false);
+      setTimeout(() => {
+        setChipIdx(i => (i + 1) % CHIP_SETS.length);
+        setChipsVis(true);
+      }, 600);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <section id="inicio" className="hero">
+      <div className="wrap hero-grid">
+        <div className="hero-copy">
+          <span className="eyebrow reveal">ASSISTÊNCIA TÉCNICA
+</span>
+          <h1 className="reveal" style={{ marginTop: 20 }}>
+            Bem-vindo(a)<br />à <span className="grad">Noctua</span>
+          </h1>
+          <p className="lede reveal">
+            Soluções para os problemas do seu computador, uma equipe de especialistas
+            pronta para ajudar com rapidez, precisão e cuidado. De dia ou de noite.
+          </p>
+          <div className="hero-cta reveal">
+            <a className="btn btn-primary btn-lg" href={WA_LINK} target="_blank" rel="noopener">
+              <span className="online-dot" /><Whatsapp /> Fale conosco no WhatsApp
+            </a>
+            <a className="btn btn-ghost btn-lg" href="#servicos" onClick={(e) => {e.preventDefault();onNav('servicos');}}>
+              Ver serviços <Arrow />
+            </a>
+          </div>
+          <div className="hero-trust reveal">
+            <div className="trust-item"><b>24h</b><span>Resposta no WhatsApp</span></div>
+            <div className="trust-item"><b>3 frentes</b><span>Limpeza · Montagem · Manutenção</span></div>
+            <div className="trust-item"><b>Todos os públicos</b><span>Residencial, empresas e autônomos</span></div>
+          </div>
+        </div>
+        <div className="hero-visual reveal">
+          <div className="halo" />
+          <div className="pulse-ring" />
+          <div className="pulse-ring pr2" />
+          <div className="pulse-ring pr3" />
+          <div className="owl-ring r2" />
+          <div className="owl-ring r1" />
+          <div className="owl-orb"><img src={LOGO_SRC} alt="Noctua Solutions" className="orb-logo" /></div>
+          {CHIP_SETS[chipIdx].map((chip, i) => {
+            const Icon = chip.icon;
+            return (
+              <div key={i} className={`chip-wrap c${i + 1}`} style={CHIP_POSITIONS[chipIdx][i]}>
+                <div
+                  className={`chip${chipsVis ? '' : ' chip-hidden'}`}
+                  style={{ transitionDelay: chipsVis ? `${i * 80}ms` : '0ms' }}
+                >
+                  <span className="chip-icon"><Icon /></span>
+                  {chip.text}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>);
+}
+
+// ---------- services ----------
+function Services() {
+  return (
+    <section id="servicos" className="block">
+      <div className="wrap">
+        <div className="section-head reveal">
+          <span className="eyebrow">O que fazemos</span>
+          <h2 className="section-h">Nossos serviços</h2>
+          <p>Da poeira no cooler ao Windows travando: cobrimos o ciclo completo do seu equipamento, com diagnóstico honesto e execução caprichada.</p>
+        </div>
+        <div className="services-grid">
+          {SERVICES.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <article key={s.title} className="svc-card reveal" style={{ transitionDelay: `${i * 90}ms` }}>
+                <div className="svc-icon"><Icon /></div>
+                <span className="svc-tag">{s.tag}</span>
+                <h3>{s.title}</h3>
+                <p style={{ color: 'var(--text-2)', fontSize: 15.5, margin: '8px 0 0' }}>{s.desc}</p>
+                <ul className="svc-list">
+                  {s.items.map((it) => <li key={it}><Check /> {it}</li>)}
+                </ul>
+              </article>);
+
+          })}
+        </div>
+      </div>
+    </section>);
+
+}
+
+// ---------- about ----------
+function About() {
+  return (
+    <section id="sobre" className="block">
+      <div className="wrap about-grid">
+        <div className="reveal">
+          <span className="eyebrow">Sobre nós</span>
+          <h2 className="section-h" style={{ marginTop: 14 }}>Tecnologia com olhar atento</h2>
+          <p className="lede" style={{ marginTop: 18 }}>
+            A Noctua é uma startup de assistência técnica focada em manutenção preventiva e
+            corretiva de computadores, notebooks e redes. Cuidamos de recuperação de dados,
+            remoção de vírus e upgrades, atendendo clientes residenciais, empresas e autônomos
+            com agilidade e transparência.
+          </p>
+          <div className="about-points">
+            {ABOUT_POINTS.map((p) => {
+              const Icon = p.icon;
+              return (
+                <div className="about-point" key={p.b}>
+                  <Icon />
+                  <div><b>{p.b}</b><span>{p.s}</span></div>
+                </div>);
+
+            })}
+          </div>
+          <p className="about-tag">Seu computador parou?<br /><span className="grad">Conte com a gente.</span></p>
+        </div>
+        <div className="about-visual reveal">
+          <div className="about-orbit" />
+          <div className="ph">
+            <Monitor />
+            <span>Imagem de apoio<br />equipe / bancada de reparo</span>
+          </div>
+        </div>
+      </div>
+    </section>);
+
+}
+
+// ---------- contact + footer ----------
+function ContactFooter() {
+  return (
+    <footer id="contato">
+      <div className="wrap contact">
+        <div className="contact-card reveal">
+          <span className="eyebrow" style={{ justifyContent: 'center', display: 'inline-flex' }}>Vamos resolver</span>
+          <h2 style={{ marginTop: 16 }}>Fale com a Noctua agora</h2>
+          <p>Mande uma mensagem no WhatsApp com o que está acontecendo. Respondemos rápido e já adiantamos o diagnóstico.</p>
+          <div className="contact-cta">
+            <a className="btn btn-primary btn-lg" href={WA_LINK} target="_blank" rel="noopener">
+              <span className="online-dot" /><Whatsapp /> Chamar no WhatsApp
+            </a>
+            <a className="btn btn-ghost btn-lg" href={SOCIAL.instagram} target="_blank" rel="noopener"><Instagram /> Ver no Instagram</a>
+          </div>
+        </div>
+
+        <div className="footer">
+          <div className="footer-top">
+            <div className="footer-brand">
+              <a className="brand" href="#inicio" style={{ pointerEvents: 'none' }}>
+                <img src={LOGO_SRC} alt="Noctua Solutions" className="brand-img" style={{ height: 58 }} />
+              </a>
+              <p>Assistência técnica e manutenção de computadores. Soluções rápidas, eficientes e de qualidade para residências, empresas e autônomos.</p>
+              <div className="socials">
+                <a className="social" href={WA_LINK} target="_blank" rel="noopener" aria-label="WhatsApp"><Whatsapp /></a>
+                <a className="social" href={SOCIAL.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Instagram /></a>
+                <a className="social" href={SOCIAL.facebook} target="_blank" rel="noopener" aria-label="Facebook"><Facebook /></a>
+                <a className="social" href={SOCIAL.tiktok} target="_blank" rel="noopener" aria-label="TikTok"><TikTok /></a>
+              </div>
+            </div>
+            <div className="footer-cols">
+              <div className="footer-col">
+                <h4>Navegação</h4>
+                {NAV.map((n) => <a key={n.id} href={`#${n.id}`}>{n.label}</a>)}
+                <a href="#contato">Contato</a>
+              </div>
+              <div className="footer-col">
+                <h4>Serviços</h4>
+                <a href="#servicos">Limpeza</a>
+                <a href="#servicos">Montagem</a>
+                <a href="#servicos">Manutenção</a>
+                <a href="#servicos">Recuperação de dados</a>
+              </div>
+              <div className="footer-col">
+                <h4>Contato</h4>
+                <a href={WA_LINK} target="_blank" rel="noopener">WhatsApp · (16) 99772-7213</a>
+                <a href={SOCIAL.instagram} target="_blank" rel="noopener">@noctuaassistencia</a>
+                <span><Pin style={{ width: 14, height: 14, verticalAlign: '-2px', marginRight: 6 }} />Atendimento local e remoto</span>
+              </div>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <span>© {new Date().getFullYear()} Noctua Solutions · Todos os direitos reservados</span>
+            <div className="team-credits">
+              <span style={{ color: 'var(--text-muted)' }}>Equipe:</span>
+              {TEAM.map((t) => <a key={t.h} href={t.url} target="_blank" rel="noopener">{t.h}</a>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>);
+
+}
+
+// ---------- scroll progress ----------
+function ScrollProgress() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const max = scrollHeight - clientHeight;
+      setPct(max <= 0 ? 0 : (scrollTop / max) * 100);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return <div className="scroll-bar" style={{ width: `${pct}%` }} />;
+}
+
+// ---------- tweaks ----------
+const ACCENTS = {
+  Violeta: { a: '#8B5CF6', a2: '#22D3EE', deep: '#6D3FD1' },
+  Ciano: { a: '#22D3EE', a2: '#6366F1', deep: '#0EA5C4' },
+  Azul: { a: '#3B82F6', a2: '#22D3EE', deep: '#2563EB' },
+  Indigo: { a: '#7C7BFF', a2: '#C084FC', deep: '#5B5BE0' }
+};
+function hexA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255}, ${a})`;
+}
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "Violeta",
+  "vibe": "glow",
+  "stars": true
+} /*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [active, setActive] = useState('inicio');
+  useReveal();
+
+  // apply accent + vibe to :root / body
+  useEffect(() => {
+    const c = ACCENTS[t.accent] || ACCENTS.Violeta;
+    const r = document.documentElement.style;
+    r.setProperty('--accent', c.a);
+    r.setProperty('--accent-2', c.a2);
+    r.setProperty('--accent-deep', c.deep);
+    r.setProperty('--accent-soft', hexA(c.a, 0.14));
+    r.setProperty('--accent-glow', hexA(c.a, 0.40));
+    document.body.dataset.vibe = t.vibe;
+    document.body.dataset.stars = t.stars ? 'on' : 'off';
+  }, [t.accent, t.vibe, t.stars]);
+
+  // active section via scroll position
+  useEffect(() => {
+    const ids = ['inicio', 'servicos', 'sobre', 'contato'];
+    let raf = 0;
+    const update = () => {
+      const line = window.scrollY + window.innerHeight * 0.36;
+      let cur = 'inicio';
+      ids.forEach((id) => {const el = document.getElementById(id);if (el && el.offsetTop <= line) cur = id;});
+      setActive(cur === 'contato' ? 'sobre' : cur);
+    };
+    const onScroll = () => {cancelAnimationFrame(raf);raf = requestAnimationFrame(update);};
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {window.removeEventListener('scroll', onScroll);cancelAnimationFrame(raf);};
+  }, []);
+
+  const onNav = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <React.Fragment>
+      <ScrollProgress />
+      <div className="night-bg" />
+      <div className="shell">
+        <Header active={active} onNav={onNav} />
+        <main>
+          <Hero onNav={onNav} />
+          <Services />
+          <About />
+        </main>
+        <ContactFooter />
+      </div>
+      <div className="fab-wrap">
+        <span className="fab-tip">Fale conosco agora</span>
+        <a className="fab" href={WA_LINK} target="_blank" rel="noopener" aria-label="WhatsApp"><Whatsapp /></a>
+      </div>
+
+      <TweaksPanel>
+        <TweakSection label="Cor de destaque" />
+        <TweakRadio label="Accent" value={t.accent} options={Object.keys(ACCENTS)} onChange={(v) => setTweak('accent', v)} />
+        <TweakSection label="Atmosfera noturna" />
+        <TweakRadio label="Fundo" value={t.vibe} options={['glow', 'grid']} onChange={(v) => setTweak('vibe', v)} />
+      </TweaksPanel>
+    </React.Fragment>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
