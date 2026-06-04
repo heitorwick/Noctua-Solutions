@@ -75,35 +75,43 @@ function Header({ active, onNav }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   const go = (e, id) => { e.preventDefault(); setOpen(false); onNav(id); };
+
+  const drawer = open ? ReactDOM.createPortal(
+    <div className="drawer open">
+      <div className="drawer-scrim" onClick={() => setOpen(false)} />
+      <div className="drawer-panel">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <span className="brand-name" style={{ fontSize: 18 }}>NOCTUA</span>
+          <button className="menu-btn" style={{ display: 'grid' }} aria-label="Fechar" onClick={() => setOpen(false)}><Close /></button>
+        </div>
+        {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={(e) => go(e, n.id)}>{n.label}</a>)}
+        <a href="#contato" onClick={(e) => go(e, 'contato')}>Contato</a>
+        <a className="btn btn-primary btn-lg" style={{ marginTop: 18, justifyContent: 'center' }} href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Fale no WhatsApp</a>
+      </div>
+    </div>,
+    document.body
+  ) : null;
+
   return (
-    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-      <div className="wrap header-inner">
-        <a className="brand" href="#inicio" onClick={(e) => go(e, 'inicio')}>
-          <img src={LOGO_SRC} alt="Noctua Solutions" className="brand-img" />
-        </a>
-        <nav className="nav">
-          {NAV.map((n) =>
-            <a key={n.id} href={`#${n.id}`} className={active === n.id ? 'active' : ''} onClick={(e) => go(e, n.id)}>{n.label}</a>
-          )}
-        </nav>
-        <div className="header-cta">
-          <a className="btn btn-primary" href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Contato</a>
-          <button className="menu-btn" aria-label="Abrir menu" onClick={() => setOpen(true)}><Menu /></button>
-        </div>
-      </div>
-      <div className={`drawer ${open ? 'open' : ''}`}>
-        <div className="drawer-scrim" onClick={() => setOpen(false)} />
-        <div className="drawer-panel">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <span className="brand-name" style={{ fontSize: 18 }}>NOCTUA</span>
-            <button className="menu-btn" style={{ display: 'grid' }} aria-label="Fechar" onClick={() => setOpen(false)}><Close /></button>
+    <>
+      <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+        <div className="wrap header-inner">
+          <a className="brand" href="#inicio" onClick={(e) => go(e, 'inicio')}>
+            <img src={LOGO_SRC} alt="Noctua Solutions" className="brand-img" />
+          </a>
+          <nav className="nav">
+            {NAV.map((n) =>
+              <a key={n.id} href={`#${n.id}`} className={active === n.id ? 'active' : ''} onClick={(e) => go(e, n.id)}>{n.label}</a>
+            )}
+          </nav>
+          <div className="header-cta">
+            <a className="btn btn-primary" href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Contato</a>
+            <button className="menu-btn" aria-label="Abrir menu" onClick={() => setOpen(true)}><Menu /></button>
           </div>
-          {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={(e) => go(e, n.id)}>{n.label}</a>)}
-          <a href="#contato" onClick={(e) => go(e, 'contato')}>Contato</a>
-          <a className="btn btn-primary btn-lg" style={{ marginTop: 18, justifyContent: 'center' }} href={WA_LINK} target="_blank" rel="noopener"><Whatsapp /> Fale no WhatsApp</a>
         </div>
-      </div>
-    </header>
+      </header>
+      {drawer}
+    </>
   );
 }
 
