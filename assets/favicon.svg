@@ -1,14 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="22" fill="#0D1117"/>
-  <g fill="none" stroke="#8B5CF6" stroke-linecap="round" stroke-linejoin="round">
-    <path stroke-width="3.4" d="M30 30 C24 18 22 12 27 9 C32 12 35 19 36 27"/>
-    <path stroke-width="3.4" d="M70 30 C76 18 78 12 73 9 C68 12 65 19 64 27"/>
-    <path stroke-width="4"   d="M50 17 C70 17 82 30 82 50 C82 72 68 88 50 88 C32 88 18 72 18 50 C18 30 30 17 50 17 Z"/>
-    <path stroke-width="3.4" d="M50 40 L50 60"/>
-    <circle cx="36" cy="48" r="11.5" stroke-width="3.4"/>
-    <circle cx="64" cy="48" r="11.5" stroke-width="3.4"/>
-    <path fill="#8B5CF6" stroke="none" d="M45 64 L50 74 L55 64 Z"/>
-  </g>
-  <circle cx="36" cy="48" r="3.4" fill="#22D3EE"/>
-  <circle cx="64" cy="48" r="3.4" fill="#22D3EE"/>
+  <rect width="100" height="100" rx="18" fill="#0D1117"/>
+
+  <!-- ear tufts -->
+  <path d="M21 40 L26 8 L44 27 Z" fill="#7040D0"/>
+  <path d="M79 40 L74 8 L56 27 Z" fill="#7040D0"/>
+
+  <!-- head circle -->
+  <circle cx="50" cy="56" r="36" fill="#7040D0"/>
+
+  <!-- left eye: outer cutout, inner ring, inner cutout, pupil -->
+  <circle cx="34" cy="46" r="12.5" fill="#0D1117"/>
+  <circle cx="34" cy="46" r="8"    fill="#7040D0"/>
+  <circle cx="34" cy="46" r="4.5"  fill="#0D1117"/>
+  <circle cx="34" cy="46" r="2.2"  fill="#7040D0"/>
+
+  <!-- right eye -->
+  <circle cx="66" cy="46" r="12.5" fill="#0D1117"/>
+  <circle cx="66" cy="46" r="8"    fill="#7040D0"/>
+  <circle cx="66" cy="46" r="4.5"  fill="#0D1117"/>
+  <circle cx="66" cy="46" r="2.2"  fill="#7040D0"/>
+
+  <!-- nose bridge -->
+  <line x1="50" y1="36" x2="50" y2="57" stroke="#0D1117" stroke-width="2.8" stroke-linecap="round"/>
+
+  <!-- circuit element: oval component -->
+  <ellipse cx="50" cy="61" rx="3" ry="4.5" fill="#0D1117"/>
+
+  <!-- circuit branches -->
+  <line x1="50" y1="65" x2="44" y2="75" stroke="#0D1117" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="50" y1="65" x2="50" y2="76" stroke="#0D1117" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="50" y1="65" x2="56" y2="75" stroke="#0D1117" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="44" cy="76" r="2.2" fill="#0D1117"/>
+  <circle cx="50" cy="77" r="2.2" fill="#0D1117"/>
+  <circle cx="56" cy="76" r="2.2" fill="#0D1117"/>
+
+  <!-- feather arcs -->
+  <path d="M18 70 Q50 83 82 70" stroke="#0D1117" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M23 78 Q50 89 77 78" stroke="#0D1117" stroke-width="3" fill="none" stroke-linecap="round"/>
 </svg>
