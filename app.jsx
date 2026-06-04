@@ -48,7 +48,7 @@ function useReveal() {
     const check = () => {
       const h = window.innerHeight;
       document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
-        if (el.getBoundingClientRect().top < h * 0.9) el.classList.add('in');
+        if (el.getBoundingClientRect().top < h * 0.88) el.classList.add('in');
       });
     };
     const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(check); };
@@ -300,7 +300,7 @@ function ContactFooter() {
         </div>
         <div className="footer">
           <div className="footer-top">
-            <div className="footer-brand">
+            <div className="footer-brand reveal">
               <a className="brand" href="#inicio" style={{ pointerEvents: 'none' }}>
                 <img src={LOGO_SRC} alt="Noctua Solutions" className="brand-img" style={{ height: 58 }} />
               </a>
@@ -313,19 +313,19 @@ function ContactFooter() {
               </div>
             </div>
             <div className="footer-cols">
-              <div className="footer-col">
+              <div className="footer-col reveal" style={{ transitionDelay: '80ms' }}>
                 <h4>Navegação</h4>
                 {NAV.map((n) => <a key={n.id} href={`#${n.id}`}>{n.label}</a>)}
                 <a href="#contato">Contato</a>
               </div>
-              <div className="footer-col">
+              <div className="footer-col reveal" style={{ transitionDelay: '160ms' }}>
                 <h4>Serviços</h4>
                 <a href="#servicos">Limpeza</a>
                 <a href="#servicos">Montagem</a>
                 <a href="#servicos">Manutenção</a>
                 <a href="#servicos">Recuperação de dados</a>
               </div>
-              <div className="footer-col">
+              <div className="footer-col reveal" style={{ transitionDelay: '240ms' }}>
                 <h4>Contato</h4>
                 <a href={WA_LINK} target="_blank" rel="noopener">WhatsApp · (16) 99772-7213</a>
                 <a href={SOCIAL.instagram} target="_blank" rel="noopener">@noctuaassistencia</a>
@@ -333,7 +333,7 @@ function ContactFooter() {
               </div>
             </div>
           </div>
-          <div className="footer-bottom">
+          <div className="footer-bottom reveal" style={{ transitionDelay: '120ms' }}>
             <span>© {new Date().getFullYear()} Noctua Solutions · Todos os direitos reservados</span>
           </div>
         </div>
