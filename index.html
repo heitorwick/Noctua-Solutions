@@ -407,30 +407,91 @@ section { position: relative; }
 @keyframes revealIn { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 
 /* ---------- responsive ---------- */
+
+/* tablet — ≤920px */
 @media (max-width: 920px) {
   .nav, .header-cta .btn { display: none; }
   .menu-btn { display: grid; place-items: center; }
-  .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+
+  .hero { padding: 140px 0 80px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-visual { min-height: 340px; order: -1; }
-  .owl-orb { width: 210px; height: 210px; } .owl-orb svg { width: 120px; height: 120px; } .orb-logo { width: 106px; }
+  .owl-orb { width: 210px; height: 210px; }
+  .owl-orb svg { width: 120px; height: 120px; }
+  .orb-logo { width: 106px; }
   .pulse-ring { width: 210px; height: 210px; }
-  .owl-ring.r1 { width: 260px; height: 260px; } .owl-ring.r2 { width: 340px; height: 340px; }
+  .owl-ring.r1 { width: 260px; height: 260px; }
+  .owl-ring.r2 { width: 340px; height: 340px; }
   .halo { width: 360px; height: 360px; }
-  .services-grid { grid-template-columns: 1fr; }
+
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+
   .about-grid { grid-template-columns: 1fr; gap: 36px; }
   .about-visual { min-height: 300px; order: -1; }
+
   .footer-top { flex-direction: column; }
+  .footer-brand { max-width: 100%; }
 }
-@media (max-width: 560px) {
+
+/* mobile — ≤600px */
+@media (max-width: 600px) {
   body { font-size: 16px; }
   .wrap { padding: 0 18px; }
-  .hero { padding: 130px 0 72px; }
-  .block { padding: 68px 0; }
-  .hero-cta { width: 100%; }
-  .hero-cta .btn { flex: 1 1 auto; }
+
+  .brand-img { height: 46px; }
+
+  .hero { padding: 112px 0 60px; }
+  .hero .lede { font-size: 17px; margin: 18px 0 28px; }
+  .hero-visual { min-height: 280px; }
+  .hero-cta { flex-direction: column; gap: 12px; }
+  .hero-cta .btn { width: 100%; justify-content: center; }
+
+  .hero-trust { flex-direction: column; gap: 0; align-items: stretch; margin-top: 32px; }
+  .trust-item { padding: 14px 0; }
+  .trust-item:first-child { padding-left: 0; }
+  .trust-item:not(:first-child)::before {
+    top: 0; left: 0; right: 0; bottom: auto;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2) 60%, transparent);
+  }
+  .trust-item b { font-size: 26px; }
+
+  .chip-wrap { display: none; }
+
+  .block { padding: 60px 0; }
+  .section-head { margin-bottom: 36px; }
+  .section-head p { font-size: 16px; }
+
+  .services-grid { grid-template-columns: 1fr; gap: 16px; }
+  .svc-card { padding: 24px 20px 26px; }
+
   .about-points { grid-template-columns: 1fr; }
-  .hero-trust { gap: 18px; }
-  .contact-card { padding: 44px 22px; }
+  .about-visual { min-height: 200px; }
+
+  .contact { padding: 56px 0 0; }
+  .contact-card { padding: 40px 20px; }
+  .contact-card p { font-size: 16px; }
+  .contact-cta { flex-direction: column; align-items: stretch; }
+  .contact-cta .btn { justify-content: center; }
+
+  .footer { padding: 48px 0 32px; margin-top: 52px; }
+  .footer-cols { flex-direction: column; gap: 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 36px; }
+  .team-credits { gap: 10px; }
+
+  .fab-wrap { right: 16px; bottom: 16px; }
+  .fab { width: 52px; height: 52px; }
+  .fab svg { width: 26px; height: 26px; }
+}
+
+/* mobile pequeno — ≤400px */
+@media (max-width: 400px) {
+  .wrap { padding: 0 14px; }
+  .hero h1 { font-size: clamp(32px, 9vw, 42px); }
+  .trust-item b { font-size: 22px; }
+  .drawer-panel a { font-size: 18px; }
+  .svc-card h3 { font-size: 20px; }
+  .footer-cols { gap: 20px; }
 }
 
   </style>
@@ -1381,6 +1442,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
-
-
-
