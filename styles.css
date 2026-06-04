@@ -153,7 +153,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-he
 /* mobile drawer */
 .drawer { position: fixed; inset: 0; z-index: 60; display: none; }
 .drawer.open { display: block; }
-.drawer-scrim { position:absolute; inset:0; background: rgba(5,7,12,.66); backdrop-filter: blur(4px); }
+.drawer-scrim { position:absolute; inset:0; background: rgba(5,7,12,.88); backdrop-filter: blur(8px); }
 .drawer-panel {
   position: absolute; top: 0; right: 0; bottom: 0; width: min(82vw, 340px);
   background: var(--bg-2); border-left: 1px solid var(--border); padding: 24px;
@@ -192,7 +192,7 @@ h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-he
 .trust-item span { font-size: 13.5px; color: var(--text-2); line-height: 1.35; }
 
 /* hero visual */
-.hero-visual { position: relative; display: grid; place-items: center; min-height: 420px; overflow: hidden; }
+.hero-visual { position: relative; display: grid; place-items: center; min-height: 420px; }
 .halo { position: absolute; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, var(--accent-glow), transparent 62%); filter: blur(8px); }
 .owl-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border-strong); }
 .owl-ring.r1 { width: 320px; height: 320px; animation: spin 38s linear infinite; }
@@ -439,7 +439,7 @@ section { position: relative; }
 
   .hero { padding: 112px 0 60px; }
   .hero .lede { font-size: 17px; margin: 18px 0 28px; }
-  .hero-visual { min-height: 280px; max-width: 100%; }
+  .hero-visual { min-height: 280px; max-width: 100%; overflow: hidden; }
   .hero-cta { flex-direction: column; gap: 12px; }
   .hero-cta .btn { width: 100%; justify-content: center; }
 
