@@ -10,11 +10,6 @@ const SOCIAL = {
   facebook: 'https://www.facebook.com/profile.php?id=61577053325074&mibextid=wwXIfr',
   tiktok: 'https://www.tiktok.com/@noctua.assistncia'
 };
-const TEAM = [
-  { h: '@_fernandobelotti', url: 'https://www.instagram.com/_fernandobelotti' },
-  { h: '@pedro.ferreira_1', url: 'https://www.instagram.com/pedro.ferreira_1' },
-  { h: '@jao.viquitor',     url: 'https://www.instagram.com/jao.viquitor' },
-];
 
 const NAV = [
   { id: 'inicio',   label: 'Início'   },
@@ -340,10 +335,6 @@ function ContactFooter() {
           </div>
           <div className="footer-bottom">
             <span>© {new Date().getFullYear()} Noctua Solutions · Todos os direitos reservados</span>
-            <div className="team-credits">
-              <span style={{ color: 'var(--text-muted)' }}>Equipe:</span>
-              {TEAM.map((t) => <a key={t.h} href={t.url} target="_blank" rel="noopener">{t.h}</a>)}
-            </div>
           </div>
         </div>
       </div>
