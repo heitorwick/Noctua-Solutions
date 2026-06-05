@@ -44,19 +44,21 @@ const ABOUT_POINTS = [
 
 function useReveal() {
   useEffect(() => {
-    let raf = 0;
-    const check = () => {
-      const h = window.innerHeight;
-      document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
-        if (el.getBoundingClientRect().top < h * 0.88) el.classList.add('in');
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
       });
-    };
-    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(check); };
-    check();
-    requestAnimationFrame(check);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
   }, []);
 }
 
@@ -228,7 +230,7 @@ function Services() {
           {SERVICES.map((s, i) => {
             const Icon = s.icon;
             return (
-              <article key={s.title} className="svc-card reveal" style={{ transitionDelay: `${i * 90}ms` }}>
+              <article key={s.title} className="svc-card reveal" style={{ animationDelay: `${i * 90}ms` }}>
                 <div className="svc-icon"><Icon /></div>
                 <span className="svc-tag">{s.tag}</span>
                 <h3>{s.title}</h3>
@@ -313,19 +315,19 @@ function ContactFooter() {
               </div>
             </div>
             <div className="footer-cols">
-              <div className="footer-col reveal" style={{ transitionDelay: '80ms' }}>
+              <div className="footer-col reveal" style={{ animationDelay: '80ms' }}>
                 <h4>Navegação</h4>
                 {NAV.map((n) => <a key={n.id} href={`#${n.id}`}>{n.label}</a>)}
                 <a href="#contato">Contato</a>
               </div>
-              <div className="footer-col reveal" style={{ transitionDelay: '160ms' }}>
+              <div className="footer-col reveal" style={{ animationDelay: '160ms' }}>
                 <h4>Serviços</h4>
                 <a href="#servicos">Limpeza</a>
                 <a href="#servicos">Montagem</a>
                 <a href="#servicos">Manutenção</a>
                 <a href="#servicos">Recuperação de dados</a>
               </div>
-              <div className="footer-col reveal" style={{ transitionDelay: '240ms' }}>
+              <div className="footer-col reveal" style={{ animationDelay: '240ms' }}>
                 <h4>Contato</h4>
                 <a href={WA_LINK} target="_blank" rel="noopener">WhatsApp · (16) 99772-7213</a>
                 <a href={SOCIAL.instagram} target="_blank" rel="noopener">@noctuaassistencia</a>
@@ -333,7 +335,7 @@ function ContactFooter() {
               </div>
             </div>
           </div>
-          <div className="footer-bottom reveal" style={{ transitionDelay: '120ms' }}>
+          <div className="footer-bottom reveal" style={{ animationDelay: '120ms' }}>
             <span>© {new Date().getFullYear()} Noctua Solutions · Todos os direitos reservados</span>
           </div>
         </div>
