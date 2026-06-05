@@ -398,15 +398,11 @@ section { position: relative; }
 }
 
 /* scroll reveal */
-.reveal { opacity: 0; transform: translateY(52px); }
-.reveal.in { animation: revealIn .85s var(--ease) forwards; }
+.reveal { opacity: 0; transform: translateY(56px); }
+.reveal.in { animation: revealIn .9s cubic-bezier(.16,1,.3,1) both; }
 @keyframes revealIn {
-  from { opacity: 0; transform: translateY(52px); }
+  from { opacity: 0; transform: translateY(56px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
-  .reveal.in { animation: none; }
 }
 
 /* ---------- responsive ---------- */
@@ -1051,21 +1047,40 @@ const ABOUT_POINTS = [
 
 function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-      els.forEach(el => el.classList.add('in'));
-      return;
-    }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
+    const show = (el) => { if (!el.classList.contains('in')) el.classList.add('in'); };
+
+    const checkScroll = () => {
+      const vh = window.innerHeight;
+      document.querySelectorAll('.reveal:not(.in)').forEach(el => {
+        if (el.getBoundingClientRect().top <= vh * 0.93) show(el);
       });
-    }, { threshold: 0.12 });
-    els.forEach(el => io.observe(el));
-    return () => io.disconnect();
+    };
+
+    // IO para deteccao precisa
+    let io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) show(e.target); }),
+        { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    }
+
+    // Scroll event como backup
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll, { passive: true });
+
+    // Check inicial com delay para garantir que o DOM esteja pronto
+    const t1 = setTimeout(checkScroll, 100);
+    const t2 = setTimeout(checkScroll, 400);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+      if (io) io.disconnect();
+    };
   }, []);
 }
 

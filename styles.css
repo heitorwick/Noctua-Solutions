@@ -389,15 +389,11 @@ section { position: relative; }
 }
 
 /* scroll reveal */
-.reveal { opacity: 0; transform: translateY(52px); }
-.reveal.in { animation: revealIn .85s var(--ease) forwards; }
+.reveal { opacity: 0; transform: translateY(56px); }
+.reveal.in { animation: revealIn .9s cubic-bezier(.16,1,.3,1) both; }
 @keyframes revealIn {
-  from { opacity: 0; transform: translateY(52px); }
+  from { opacity: 0; transform: translateY(56px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
-  .reveal.in { animation: none; }
 }
 
 /* ---------- responsive ---------- */
